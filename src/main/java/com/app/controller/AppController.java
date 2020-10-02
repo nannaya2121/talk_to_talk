@@ -1,0 +1,39 @@
+package com.app.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.app.model.User;
+import com.app.services.UserService;
+
+@Controller
+public class AppController {
+	
+	@Autowired
+	private UserService userService;
+	
+	@RequestMapping("/welcome")
+	public String Welcome(HttpServletRequest request) {
+		request.setAttribute("mode", "MODE_HOME");
+		return "welcome";
+	}
+	
+	@RequestMapping("/regist")
+	public String regist(HttpServletRequest request) {
+		request.setAttribute("mode", "MODE_REGIST");
+		return "welcome";
+	}
+	
+	@PostMapping("/save-user")
+	public String registUser(@ModelAttribute User user,BindingResult bindingResult, HttpServletRequest request) {
+		userService.saveMyUser(user);
+		request.setAttribute("mode", "MODE_HOME");
+		return "welcome";
+	}
+}
